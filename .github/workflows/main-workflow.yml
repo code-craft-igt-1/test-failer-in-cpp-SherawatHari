@@ -13,17 +13,17 @@ jobs:
         pip install cpplint
         cpplint  --filter=-legal --linelength=100 *.cpp
 
-    - name: tshirts fail
+    - name: tshirts pass
       run: |
         g++ -Wall -Wextra -Werror tshirts.cpp -o tshirts.out
-        bash .github/workflows/expectfail.sh ./tshirts.out
+        ./tshirts.out
 
-    - name: misaligned fail
+    - name: misaligned pass
       run: |
         g++ -Wall -Wextra -Werror misaligned.cpp -o misaligned.out
-        bash .github/workflows/expectfail.sh ./misaligned.out
+        ./misaligned.out
 
-    - name: alerter fail
+    - name: alerter pass
       run: |
         g++ -Wall -Wextra -Werror weatherreport.cpp -o weatherreport.out
-        bash .github/workflows/expectfail.sh ./weatherreport.out
+        ./weatherreport.out
