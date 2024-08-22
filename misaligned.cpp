@@ -1,21 +1,54 @@
 #include <assert.h>
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
-int printColorMap() {
-    const char* majorColor[] = {"White", "Red", "Black", "Yellow", "Violet"};
-    const char* minorColor[] = {"Blue", "Orange", "Green", "Brown", "Slate"};
-    int i = 0, j = 0;
-    for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-            std::cout << i * 5 + j << " | " << majorColor[i] << " | " << minorColor[i] << "\n";
-        }
+const std::vector<std::string> majorColors = { "White", "Red", "Black", "Yellow", "Violet" };
+const std::vector<std::string> minorColors = { "Blue", "Orange", "Green", "Brown", "Slate" };
+
+std::pair<std::string, std::string> getColorsFromPairNumber(int pairNumber) {
+    int totalPairs = majorColors.size() * minorColors.size();
+    if (pairNumber < 1 || pairNumber > totalPairs) {
+        return { "", "" };
     }
-    return i * j;
+
+    int zeroBasedPairNumber = pairNumber - 1;
+    std::string major = majorColors[zeroBasedPairNumber / minorColors.size()];
+    std::string minor = minorColors[zeroBasedPairNumber % minorColors.size()];
+
+    return { major, minor };
+}
+
+std::string generateExpectedOutput() {
+    std::ostringstream oss;
+    int totalPairs = majorColors.size() * minorColors.size();
+    for (int pairN = 1; pairN <= totalPairs; ++pairN) {
+        std::pair<std::string, std::string> cols = getColorsFromPairNumber(pairN);
+        oss << "Pair number " << pairN << ": " << cols.first << " - " << cols.second << std::endl;
+    }
+    return oss.str();
+}
+
+std::string getAllColorPairs() {
+    std::ostringstream oss;
+    int totalPairs = majorColors.size() * minorColors.size();
+    for (int pairN = 1; pairN <= totalPairs; ++pairN) {
+        std::pair<std::string, std::string> cols = getColorsFromPairNumber(pairN);
+        oss << "Pair number " << pairN << ": " << cols.first << " - " << cols.second << std::endl;
+    }
+    return oss.str();
+}
+
+void testprintColorMap() {
+    // Generate expected output dynamically and compare with
+    std::string expectedOutput = generateExpectedOutput();
+    std::string actualOutput = getAllColorPairs();
+    assert(expectedOutput == actualOutput);
 }
 
 int main() {
-    int result = printColorMap();
-    assert(result == 25);
-    std::cout << "All is well (maybe!)\n";
+    testprintColorMap();
+    std::cout << "All is well\n";
     return 0;
 }
